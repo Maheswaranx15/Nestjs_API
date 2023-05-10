@@ -7,7 +7,7 @@ import {indigg1155} from './modules/indigg1155';
 
 @Controller()
 export class AppController {
-  private provider = new ethers.providers.JsonRpcProvider('https://polygon-mumbai.infura.io/v3/23f6df0cf29e4939a55ac56bacfbb3a9');
+  private provider = new ethers.providers.JsonRpcProvider('InfuraKey');
 
   private contract721 = new ethers.Contract(indigg721?.address, indigg721?.abi, this.provider);
   private contract1155 = new ethers.Contract(indigg1155?.address, indigg1155?.abi, this.provider);
@@ -48,7 +48,7 @@ export class AppController {
       throw new Error('Invalid input parameters');
     }
     try {
-      const signer = new ethers.Wallet('4c41ce02966d78bab56aafe767d27ec91ba5f170a7d01f6b548226fcc1b17968', this.provider);
+      const signer = new ethers.Wallet('PrivateKey', this.provider);
       console.log(signer);
       
       const contractWithSigner = this.contract721.connect(signer);
@@ -80,7 +80,7 @@ export class AppController {
     }
     try {
       // Approve transfer
-      const signer = new ethers.Wallet('4c41ce02966d78bab56aafe767d27ec91ba5f170a7d01f6b548226fcc1b17968', this.provider);
+      const signer = new ethers.Wallet('PrivateKey', this.provider);
       console.log(signer);
 
       const contractWithSigner = this.contract721.connect(signer);
@@ -105,7 +105,7 @@ export class AppController {
   async burnToken(@Body() body: { tokenId: number }): Promise<{ message: string }> {
     const { tokenId } = body;
     try {
-      const signer = new ethers.Wallet('4c41ce02966d78bab56aafe767d27ec91ba5f170a7d01f6b548226fcc1b17968', this.provider);
+      const signer = new ethers.Wallet('PrivateKey', this.provider);
       console.log(signer);     
       const contractWithSigner = this.contract721.connect(signer);
       const tx = await contractWithSigner.burn(tokenId);
@@ -126,7 +126,7 @@ async mint(
   const { account, id, amount, data } = body;
   try {
     // Perform mint
-    const signer = new ethers.Wallet('4c41ce02966d78bab56aafe767d27ec91ba5f170a7d01f6b548226fcc1b17968', this.provider);
+    const signer = new ethers.Wallet('PrivateKey', this.provider);
     const contractWithSigner = this.contract1155.connect(signer);
     await contractWithSigner.mint(account, id, amount, data);
     return { message: `Minted ${amount} tokens of ID ${id} to account ${account} successfully` };
@@ -144,7 +144,7 @@ async mint(
     const { to, ids, amounts, data } = body;
     try {
       // Perform batch minting
-      const signer = new ethers.Wallet('4c41ce02966d78bab56aafe767d27ec91ba5f170a7d01f6b548226fcc1b17968', this.provider);
+      const signer = new ethers.Wallet('PrivateKey', this.provider);
       const contractWithSigner = this.contract1155.connect(signer);
       await contractWithSigner.mintBatch(to, ids, amounts, data);
       return { message: `Tokens minted successfully` };
@@ -165,7 +165,7 @@ async batchMintToAddresses(
   console.log(body);
   try {
     // Perform batch mint
-    const signer = new ethers.Wallet('4c41ce02966d78bab56aafe767d27ec91ba5f170a7d01f6b548226fcc1b17968', this.provider);
+    const signer = new ethers.Wallet('PrivateKey', this.provider);
     console.log(signer);     
     const contractWithSigner = this.contract1155.connect(signer);
     await contractWithSigner.batchMintToAddresses(accounts, id, amount, data);
